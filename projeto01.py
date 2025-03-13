@@ -1,3 +1,5 @@
-int = 2
-float = 2.2
-print(int, float)
+x = 11
+y = 12
+print(x)
+print(y)
+print(type(x))
