@@ -47,3 +47,4 @@ print("inner(a, b):\n", py.inner(a, b))
 #tensorflow: é uma biblioteca de código aberto desenvolvida pelo Google ,
 # TensorFlow é um sistema que manipula tensores através de uma sequência de operações matemáticas.
 #Tensor = estrutura de dados multidimensional 
+#sistema AI  
