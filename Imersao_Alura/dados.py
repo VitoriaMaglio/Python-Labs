@@ -1,7 +1,7 @@
 import pandas as pd
 #Pandas é uma biblioteca de análise de dados
-df = pd.read_csv("https://raw.githubusercontent.com/guilhermeonrails/data-jobs/refs/heads/main/salaries.csv") # ler uma base de dados
-print(df.head())
+df = pd.read_csv("https://raw.githubusercontent.com/guilhermeonrails/data-jobs/refs/heads/main/salaries.csv") # ler uma base de dados,importar : declara a var, pd.read_csv()
+print(df.head()) #mostra as primeiras 5 linhas
 #Não estava rodando a biblioteca, e melhorar:
 # nome do arquivo não pode ter o mesmo nome da biblioteca que está sendo importada.
 # vs tem que usar o mesmo interpretador Python do qual a biblioteca está (verificar a versão da biblioteca e no canto direito da tela, arrumar a versão do py no vs)
@@ -83,3 +83,64 @@ mapa_trabalho = {
 df['remoto'] = df['remoto'].replace(mapa_trabalho)
 df['remoto'].value_counts()
 print(df.describe(include='object'))
+
+#reconhecer valores nulos
+print(df.isnull().sum())
+print(df['ano'].unique())#Checando quais anos existem no DataFrame:
+print(df[df.isnull().any(axis=1)])#Exibindo quais linhas estão com os anos nulos:     Sempre começa chamando a base(df) e depois constroi o filtro.
+
+
+
+#preencher os dados nulos, excluír eles e 
+#criando DATAFRAME
+import numpy as np
+df_salarios = pd.DataFrame({
+    'nome':['Ana','Bruno','Carlos','Diana', 'Eduardo'],
+    'salario' : [4000, np.nan, 3500, np.nan, 5000]
+})
+# Preencher com a média salarial ;
+# base ['nova coluna'] = dentro desse dataframe, vou pegar a coluna salario , preencher a coluna e com os salarios e a media, e arredondar 
+df_salarios['salario_media'] = df_salarios['salario'].fillna(df_salarios['salario'].mean().round(2))
+
+# Preencher com a mediana salarial  reduz um valor muito fora dos outros
+df_salarios['salario_mediana'] = df_salarios['salario'].fillna(df_salarios['salario'].median())
+
+print(df_salarios)
+
+df_temperaturas = pd.DataFrame({
+    'dia': ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'],
+    'temperatura': [30, np.nan, np.nan, 28, 27]
+})
+df_temperaturas['preenchido_ffill'] = df_temperaturas['temperatura'].ffill()
+#        nova coluna com os valores  ffil completa com o valor anterior
+print(df_temperaturas)
+    
+#preencher com valor fixo
+df_cidades = pd.DataFrame({
+    'nome': ['Ana', 'Bruno', 'Carlos', 'Diana', 'Eduardo'],
+    'cidade': ['São Paulo', np.nan, 'Curitiba', np.nan, 'Salvador']
+})
+
+df_cidades['cidade_corrigida'] = df_cidades['cidade'].fillna('Não informado')
+#                                         preenche com um valor fixo    fillna                
+print(df_cidades)
+
+#preenche com um valor posterior bfill
+
+
+df_temperaturas2 = pd.DataFrame({
+    'dia': ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'],
+    'temperatura': [30, np.nan, np.nan, 28, 27]
+})
+
+df_temperaturas2['preenchido_bfill'] = df_temperaturas2['temperatura'].bfill()
+
+df_temperaturas2
+
+#tratando dados excluindo quando os valores nulos são pequenos perto dos preenchidos
+df_limpo = df.dropna()
+df_limpo.isnull().sum()#soma os valores nulos
+
+#alterando o tipo de dados
+df_limpo.info()# aqui vai trazer as informações dos daados, por exemplo o tipo da coluna ano, que é float, porém ano é um número inteiro ent tem que mudar o tipo
+df_limpo = df_limpo.assign(ano=df_limpo['ano'].astype('Int64'))
